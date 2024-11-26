@@ -10,17 +10,24 @@ WIKITEXT = """{{{{Clothing infobox
 |craft slots={}
 }}}}"""
 
+CRAFT_SLOT_TEXT = """{{{{CraftSlot|id={} |amount={} }}}}"""
+
 # Example of reusing the reader
 for row in reader:
-
-    craft_slot_value1 = '{{CraftSlot|' + row['Craft Slot 1 ID'] + '|' + row['Craft Slot 1 Amount'] + '}}'
-    craft_slot_value2 = '{{CraftSlot|' + row['Craft Slot 2 ID'] + '|' + row['Craft Slot 2 Amount'] + '}}'
-    craft_slot_value3 = '{{CraftSlot|' + row['Craft Slot 3 ID'] + '|' + row['Craft Slot 3 Amount'] + '}}'
+    craft_slots = []
+    for i in range(5):  # 0, 1, 2, 3, 4
+        j = str(i + 1)  # 1, 2, 3, 4, 5
+        idname = 'Craft Slot ' + j + ' ID'  # Craft Slot 1 ID
+        amountname = 'Craft Slot ' + j + ' Amount'  # Craft Slot 1 Amount
+        if row[idname] != '':
+            craft_slots.append(  # lua: craft_slots[#craft_slots+1] =
+                CRAFT_SLOT_TEXT.format(row[idname], row[amountname])
+            )
 
     print(WIKITEXT.format(
         row['UID'],
         row['-Friendly Name-'],
-        craft_slot_value1 + '\n' + craft_slot_value2 + '\n' + craft_slot_value3
+        ''.join(craft_slots)
     ))
 
 # cleanup
