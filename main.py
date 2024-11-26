@@ -1,5 +1,10 @@
 import csv
 
+from mwcleric import WikiggClient, AuthCredentials
+
+credentials = AuthCredentials(user_file='me')
+site = WikiggClient('gg', credentials=credentials)
+
 f = open('data.csv', mode='r', newline='')
 # Load the CSV data
 reader = csv.DictReader(f)
@@ -24,11 +29,14 @@ for row in reader:
                 CRAFT_SLOT_TEXT.format(row[idname], row[amountname])
             )
 
-    print(WIKITEXT.format(
+    text = WIKITEXT.format(
         row['UID'],
         row['-Friendly Name-'],
         ''.join(craft_slots)
-    ))
+    )
+    page_name = row['-Friendly Name-']
+    print('Saving page ' + page_name + '...')
+    site.save_title(page_name, text, summary='Automatic page creation from mwcleric :)')
 
 # cleanup
 f.close()
