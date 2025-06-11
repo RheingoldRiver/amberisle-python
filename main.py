@@ -3,7 +3,7 @@ import csv
 from mwcleric import WikiggClient, AuthCredentials
 
 credentials = AuthCredentials(user_file='me')
-site = WikiggClient('gg', credentials=credentials)
+site = WikiggClient('test', credentials=credentials)
 
 f = open('data.csv', mode='r', newline='')
 # Load the CSV data
